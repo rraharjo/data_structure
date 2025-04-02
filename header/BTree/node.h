@@ -206,6 +206,7 @@ namespace ds
             std::string to_ret = "Degree: " + std::to_string(this->degree) + "\n";
             to_ret += "Size: " + std::to_string(this->get_size()) + "\n";
             to_ret += "Capacity: " + std::to_string(this->capacity()) + "\n";
+            to_ret += "Leaf node: " + std::to_string(this->is_leaf()) + "\n";
             to_ret += "Keys: ";
             for (T t : this->keys)
             {
