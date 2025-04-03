@@ -15,11 +15,12 @@ namespace ds
             BNode<T> *root;
 
             std::optional<std::pair<T, int>> search_node(BNode<T> *node, T obj);
-
         public:
             std::optional<std::pair<T, int>> search(T obj);
 
             void insert(T obj);
+
+            void remove(T obj);
 
             BTree(int degree = 2);
 
@@ -86,6 +87,11 @@ namespace ds
             else{
                 this->root->insert(obj);
             }
+        }
+
+        template <typename T>
+        void BTree<T>::remove(T obj){
+            this->root->remove(obj);
         }
 
         template <typename T>
