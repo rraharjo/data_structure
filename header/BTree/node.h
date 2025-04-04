@@ -230,37 +230,7 @@ namespace ds
             else
             {
                 int pre_size = pre->get_size();
-                // merge pre and suc
-                // Moving object and successor elements to the predecessor
                 this->merge(i);
-                // pre->keys[pre_size] = obj;
-                // pre_size++;
-                // for (int j = 0; j < suc->get_size(); j++)
-                // {
-                //     pre->keys[pre_size++] = suc->keys[j];
-                // }
-                // pre_size = pre->get_size() + 1;
-                // for (int j = 0; j < suc->get_size() + 1; j++)
-                // {
-                //     pre->children[pre_size++] = suc->children[j];
-                //     suc->children[j] = nullptr;
-                // }
-                // pre->size += suc->get_size() + 1;
-
-                // // shifting everything to the right of obj in this node 1 position to the left
-                // for (int j = i; j < this->get_size() - 1; j++)
-                // {
-                //     this->keys[j] = this->keys[j + 1];
-                // }
-                // this->keys[this->get_size() - 1] = std::nullopt;
-                // for (int j = i + 1; j < this->get_size(); j++)
-                // {
-                //     this->children[j] = this->children[j + 1];
-                // }
-                // this->children[this->get_size()] = nullptr;
-                // this->size--;
-
-                // delete suc;
                 pre->remove(obj);
             }
         }
@@ -268,7 +238,6 @@ namespace ds
         template <typename T>
         void BNode<T>::remove_3(T obj)
         {
-            // TODO: even if we're not deleting it, we have to merge
             if (this->is_leaf()){
                 return;
             }
@@ -278,19 +247,6 @@ namespace ds
                 i++;
             }
             BNode<T> *c_i = (BNode<T> *)this->children[i];
-            // bool c_i_has_obj = false;
-            // for (int j = 0; j < c_i->get_size(); j++)
-            // {
-            //     if (c_i->keys[j] == obj)
-            //     {
-            //         c_i_has_obj = true;
-            //         break;
-            //     }
-            // }
-            // if (!c_i_has_obj)
-            // {
-            //     c_i->remove(obj);
-            // }
             if (c_i->get_size() < this->degree)
             {
                 if (i > 0 && ((BNode<T> *)this->children[i - 1])->get_size() >= this->degree)
@@ -392,7 +348,7 @@ namespace ds
                 this->children[j] = this->children[j + 1];
             }
             this->keys[this->get_size() - 1] = std::nullopt;
-            this->children[this->get_size()] = nullptr;//this should be this->get_size() ???
+            this->children[this->get_size()] = nullptr;
             this->size--;
             delete c_i_plus_one;
         }
@@ -419,45 +375,7 @@ namespace ds
                 to_ret += t.has_value() ? std::to_string(t.value()) + " " : " ";
             }
             to_ret += "\n";
-            // for (BNode<T> *c : this->children)
-            // {
-            //     to_ret += std::to_string((int)c);
-            // }
-            // to_ret += "\n";
             return to_ret;
         }
     }
 }
-
-// template <typename T>
-// void merge(ds::btree::BNode<T> *node, int i)
-// {
-//     BNode<T> *c_i_plus_one = (BNode<T> *)node->children[i + 1];
-//     BNode<T> *c_i = (BNode<T> *)node->children[i];
-//     int to_add_idx = c_i->get_size();
-//     c_i->keys[to_add_idx++] = node->keys[i];
-//     for (int j = 0; j < c_i->get_size(); j++)
-//     {
-//         c_i->keys[to_add_idx++] = c_i_plus_one->keys[j];
-//     }
-//     to_add_idx = c_i->get_size() + 1;
-//     for (int j = 0; j <= c_i->get_size(); j++)
-//     {
-//         c_i->children[to_add_idx++] = c_i_plus_one->children[j];
-//         c_i_plus_one->children[j] = nullptr;
-//     }
-//     c_i->size += 1 + c_i_plus_one->get_size();
-
-//     for (int j = i - 1; j < node->get_size() - 1; j++)
-//     {
-//         node->keys[j] = node->keys[j + 1];
-//     }
-//     for (int j = i; j < node->get_size(); j++)
-//     {
-//         node->children[j] = node->children[j + 1];
-//     }
-//     node->keys[node->get_size() - 1] = std::nullopt;
-//     node->children[node->get_size() - 1] = nullptr;
-//     node->size--;
-//     delete c_i_plus_one;
-// }
