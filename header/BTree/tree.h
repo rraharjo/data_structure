@@ -15,6 +15,7 @@ namespace ds
             BNode<T> *root;
 
             std::optional<std::pair<T, int>> search_node(BNode<T> *node, T obj);
+
         public:
             std::optional<std::pair<T, int>> search(T obj);
 
@@ -36,13 +37,15 @@ namespace ds
     namespace btree
     {
         template <typename T>
-        BTree<T>::BTree(int degree): degree(degree), depth(1){
+        BTree<T>::BTree(int degree) : degree(degree), depth(1)
+        {
             this->root = new BNode<T>(this->degree);
             this->root->leaf = true;
         }
 
         template <typename T>
-        BTree<T>::~BTree(){
+        BTree<T>::~BTree()
+        {
             delete this->root;
         }
 
@@ -57,26 +60,31 @@ namespace ds
                 }
                 if (obj > node->keys[i])
                 {
-                    if (node->is_leaf()){
+                    if (node->is_leaf())
+                    {
                         return std::nullopt;
                     }
                     return this->search_node((BTree<T> *)this->children[i + 1], obj);
                 }
             }
-            if (node->is_leaf()){
+            if (node->is_leaf())
+            {
                 return std::nullopt;
             }
             return this->search_node((BTree<T> *)this->children[0], obj);
         }
 
         template <typename T>
-        std::optional<std::pair<T, int>> BTree<T>::search(T obj){
+        std::optional<std::pair<T, int>> BTree<T>::search(T obj)
+        {
             return this->search_node(this->root, obj);
         }
 
         template <typename T>
-        void BTree<T>::insert(T obj){
-            if (this->root->full()){
+        void BTree<T>::insert(T obj)
+        {
+            if (this->root->full())
+            {
                 BNode<T> *new_node = new BNode<T>(this->degree);
                 BNode<T> *root = this->root;
                 this->root = new_node;
@@ -84,28 +92,41 @@ namespace ds
                 this->root->split_child(0);
                 this->root->insert(obj);
             }
-            else{
+            else
+            {
                 this->root->insert(obj);
             }
         }
 
         template <typename T>
-        void BTree<T>::remove(T obj){
+        void BTree<T>::remove(T obj)
+        {
             this->root->remove(obj);
+            if (root->get_size() == 0){
+                BNode<T> *new_root = this->root->children[0];
+                this->root->children[0] = nullptr;
+                delete this->root;
+                this->root = new_root;
+            }
         }
 
         template <typename T>
-        std::string BTree<T>::to_string(){
+        std::string BTree<T>::to_string()
+        {
             std::queue<BNode<T> *> nexts;
             std::string to_ret = "";
-            if (this->root != nullptr){
+            if (this->root != nullptr)
+            {
                 nexts.push(this->root);
             }
-            while (!nexts.empty()){
+            while (!nexts.empty())
+            {
                 BNode<T> *cur = nexts.front();
                 nexts.pop();
-                for (BNode<T> *child : cur->children){
-                    if (child != nullptr){
+                for (BNode<T> *child : cur->children)
+                {
+                    if (child != nullptr)
+                    {
                         nexts.push(child);
                     }
                 }
